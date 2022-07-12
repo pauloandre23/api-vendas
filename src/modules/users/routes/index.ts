@@ -7,7 +7,7 @@ const usersController = new UserController();
 
 usersRouter
 .get('/', usersController.index)
-
+.get('/givenUser/:id', usersController.givenUser)
 
 .post('/',
 celebrate({

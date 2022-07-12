@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import CreateUserService from "../services/CreateUserService";
+import GivenUserService from "../services/GivenUserService";
 import ListUsersService from "../services/ListUsersService";
 
 export default class ProductController {
@@ -27,6 +28,17 @@ export default class ProductController {
     const createUser = new CreateUserService();
 
     const user = await createUser.execute({name, email, password});
+
+    return response.json(user);
+  }
+
+  public async givenUser(request: Request, response: Response) : Promise<Response> {
+
+    const { id } = request.params;
+
+    const givenUser = new GivenUserService()
+
+    const user = await givenUser.execute(id);
 
     return response.json(user);
   }

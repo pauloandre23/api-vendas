@@ -1,4 +1,4 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, getConnection, getRepository, Repository } from 'typeorm';
 import User from '../entities/User';
 
 @EntityRepository(User)
@@ -30,6 +30,14 @@ class UsersRepository extends Repository<User> {
       },
     });
 
+    return user;
+  }
+
+  public async givenUser(id: string): Promise<User | undefined> {
+    const user = await getRepository(User)
+    .createQueryBuilder('user')
+      .where('user.id = :id', { id: id })
+      .getOne()
     return user;
   }
 }
