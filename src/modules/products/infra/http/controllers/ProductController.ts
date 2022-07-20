@@ -6,10 +6,15 @@ import ShowProductService from "../../../services/ShowProductService";
 import UpdateProductService from "../../../services/UpdateProductService";
 
 export default class ProductController {
+  constructor(
+    private listProductsService: ListProductService,
+    private showProductService: ShowProductService,
+    private deleteProductService: DeleteProductService,
+    private createProductService: CreateProductService,
+    private updateProductService: UpdateProductService){}
   public async index(request: Request, response: Response) : Promise<Response> {
-    const listProducts = new ListProductService();
 
-    const products = await listProducts.execute();
+    const products = await this.listProductsService.execute();
 
     return response.json(products);
 }
@@ -17,9 +22,8 @@ export default class ProductController {
   public async show(request: Request, response: Response) : Promise<Response> {
 
     const { id } = request.params;
-    const showProduct = new ShowProductService();
 
-    const product = await showProduct.execute({id});
+    const product = await this.showProductService.execute({id});
 
     return response.json(product);
   }
@@ -27,9 +31,8 @@ export default class ProductController {
   public async create(request: Request, response: Response) : Promise<Response> {
 
     const { name, price, quantity } = request.body;
-    const createProduct = new CreateProductService();
 
-    const product = await createProduct.execute({name, price, quantity});
+    const product = await this.createProductService.execute({name, price, quantity});
 
     return response.json(product);
   }
@@ -37,9 +40,7 @@ export default class ProductController {
     const { name, price, quantity } = request.body;
     const { id } = request.params;
 
-    const updateProduct = new UpdateProductService();
-
-    const product = await updateProduct.execute({
+    const product = await this.updateProductService.execute({
       id,
       name,
       price,
@@ -52,9 +53,7 @@ export default class ProductController {
   public async delete(request: Request, response: Response): Promise<Response> {
     const { id } = request.params;
 
-    const deleteProduct = new DeleteProductService();
-
-    await deleteProduct.execute({ id });
+    await this.deleteProductService.execute({ id });
 
     return response.json([]);
   }
