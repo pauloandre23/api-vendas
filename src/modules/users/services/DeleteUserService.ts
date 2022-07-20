@@ -1,22 +1,22 @@
 import AppError from "@shared/errors/AppError";
-import { getCustomRepository } from "typeorm";
-import UsersRepository from "../typeorm/repositories/UserRepository";
+import { IUserRepository } from "../infra/repositories/IUserRepository";
 
 interface IRequest {
   id: string;
 }
 
 class DeleteUserService {
-  public async execute({ id }: IRequest) : Promise<void> {
-    const usersRepository = getCustomRepository(UsersRepository);
+  constructor(private repository: IUserRepository) {}
 
-    const user = await usersRepository.findOne(id);
+  public async execute({ id }: IRequest) : Promise<void> {
+
+    const user = await this.repository.findOne(id);
 
     if (!user) {
       throw new AppError('User not found', 404);
     }
 
-    await usersRepository.remove(user);
+    await this.repository.remove(user);
   }
 }
 
