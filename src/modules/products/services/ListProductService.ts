@@ -1,12 +1,11 @@
-import { getCustomRepository } from "typeorm";
+import { IProductsRepository } from "../domain/repositories/IProductsRepository";
 import Product from "../infra/typeorm/entities/Product";
-import { ProductRepository } from "../infra/typeorm/repositories/ProductsRepository";
 
 class ListProductService {
-  public async execute() : Promise<Product[]> {
-    const productsRepository = getCustomRepository(ProductRepository);
+  constructor(private repository: IProductsRepository) {}
 
-    const products = await productsRepository.find()
+  public async execute() : Promise<Product[]> {
+    const products = await this.repository.find()
 
     return products;
   }

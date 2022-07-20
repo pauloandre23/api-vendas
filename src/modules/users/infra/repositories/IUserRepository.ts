@@ -1,5 +1,5 @@
-import { ICreateUser } from "../domain/models/ICreateUser";
-import { IUser } from "../domain/models/IUser";
+import { ICreateUser } from "../../domain/models/ICreateUser";
+import { IUser } from "../../domain/models/IUser";
 import User from "../typeorm/entities/User";
 
 export interface IUserRepository {

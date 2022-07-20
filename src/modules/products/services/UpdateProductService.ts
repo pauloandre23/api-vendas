@@ -1,7 +1,6 @@
 import AppError from "@shared/errors/AppError";
-import { getCustomRepository } from "typeorm";
+import { IProductsRepository } from "../domain/repositories/IProductsRepository";
 import Product from "../infra/typeorm/entities/Product";
-import { ProductRepository } from "../infra/typeorm/repositories/ProductsRepository";
 
 interface IRequest {
   id: string;
@@ -11,21 +10,22 @@ interface IRequest {
 }
 
 class UpdateProductService {
+  constructor(private repository: IProductsRepository) {}
+
   public async execute({
      id,
      name,
      price,
      quantity,
   }: IRequest) : Promise<Product> {
-    const productsRepository = getCustomRepository(ProductRepository);
 
-    const product = await productsRepository.findOne(id);
+    const product = await this.repository.findOne(id);
 
     if (!product) {
       throw new AppError('Product not found');
     }
 
-    const productExists = await productsRepository.findByName(name);
+    const productExists = await this.repository.findByName(name);
 
     if (productExists && name !== product.name) {
       throw new AppError(`Product ${name} already exists. Try a different name.`);
@@ -35,7 +35,7 @@ class UpdateProductService {
     product.price = price;
     product.quantity = quantity;
 
-    await productsRepository.save(product);
+    await this.repository.save(product);
 
     return product;
   }

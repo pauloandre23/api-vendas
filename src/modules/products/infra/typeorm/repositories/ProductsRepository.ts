@@ -7,7 +7,7 @@ import Product from '../entities/Product';
 
 export class ProductRepository implements IProductsRepository {
   private ormRepository: Repository<Product>
-  constructor( ) {
+  constructor() {
     this.ormRepository = getRepository(Product)
   }
   public async findByName(name: string): Promise<Product | undefined> {
@@ -32,6 +32,21 @@ export class ProductRepository implements IProductsRepository {
     await this.ormRepository.save(product);
 
     return product;
+  }
+
+  public async findOne(id: string): Promise<Product | undefined> {
+    const userFound = await this.ormRepository.findOne(id);
+
+    return userFound;
+  }
+
+  public async remove(product: Product): Promise<void> {
+    await this.ormRepository.remove(product);
+  }
+
+  public async find(): Promise<Product[]> {
+    const products = await this.ormRepository.find();
+    return products;
   }
 
 }
