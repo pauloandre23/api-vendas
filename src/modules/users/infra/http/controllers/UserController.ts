@@ -4,12 +4,15 @@ import GivenUserService from '../../../services/GivenUserService';
 import ListUsersService from '../../../services/ListUsersService';
 
 export default class ProductController {
+  constructor(
+    private listUsersService: ListUsersService,
+    private createUserService: CreateUserService,
+    private givenUserService: GivenUserService
+    ) {}
+
   public async index(request: Request, response: Response): Promise<Response> {
-    const listUsers = new ListUsersService();
 
-    console.log("#ID  ", request.user.id)
-
-    const users = await listUsers.execute();
+    const users = await this.listUsersService.execute();
 
     return response.json(users);
   }
@@ -26,9 +29,8 @@ export default class ProductController {
 
   public async create(request: Request, response: Response): Promise<Response> {
     const { name, email, password } = request.body;
-    const createUser = new CreateUserService();
 
-    const user = await createUser.execute({ name, email, password });
+    const user = await this.createUserService.execute({ name, email, password });
 
     return response.json(user);
   }
@@ -39,9 +41,7 @@ export default class ProductController {
   ): Promise<Response> {
     const { id } = request.params;
 
-    const givenUser = new GivenUserService();
-
-    const user = await givenUser.execute(id);
+    const user = await this.givenUserService.execute(id);
 
     return response.json(user);
   }
