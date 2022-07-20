@@ -4,8 +4,8 @@ import {
   getRepository,
   Repository,
 } from 'typeorm';
-import { ICreateUser } from '../../domain/models/ICreateUser';
-import { IUser } from '../../domain/models/IUser';
+import { ICreateUser } from '../../../domain/models/ICreateUser';
+import { IUser } from '../../../domain/models/IUser';
 import { IUserRepository } from '../../repositories/IUserRepository';
 import User from '../entities/User';
 

@@ -1,7 +1,6 @@
 import AppError from "@shared/errors/AppError";
-import { getCustomRepository } from "typeorm";
+import { IProductsRepository } from "../domain/repositories/IProductsRepository";
 import Product from "../infra/typeorm/entities/Product";
-import { ProductRepository } from "../infra/typeorm/repositories/ProductsRepository";
 
 interface IRequest {
   name: string;
@@ -10,21 +9,22 @@ interface IRequest {
 }
 
 class CreateProductService {
+  constructor(private repository: IProductsRepository) {}
+
   public async execute({name, price, quantity}: IRequest) : Promise<Product> {
-    const productsRepository = getCustomRepository(ProductRepository);
-    const productExists = await productsRepository.findByName(name);
+   const productExists = await this.repository.findByName(name);
 
     if (productExists) {
       throw new AppError(`Product ${name} already exists`)
   }
 
-  const product = await productsRepository.create({
+  const product = await this.repository.create({
     name,
     price,
     quantity
   });
 
-  await productsRepository.save(product);
+  await this.repository.save(product);
 
   return product;
   }
