@@ -1,6 +1,5 @@
+import { dataSource } from '@shared/infra/typeorm';
 import {
-  EntityRepository,
-  getConnection,
   getRepository,
   Repository,
 } from 'typeorm';
@@ -13,9 +12,9 @@ import User from '../entities/User';
 class UsersRepository implements IUserRepository {
   private ormRepository: Repository<User>;
   constructor() {
-    this.ormRepository = getRepository(User)
+    this.ormRepository = dataSource.getRepository(User)
   }
-  public async findByName(name: string): Promise<User | undefined> {
+  public async findByName(name: string): Promise<User | null> {
     const user = await this.ormRepository.findOne({
       where: {
         name,
@@ -25,7 +24,7 @@ class UsersRepository implements IUserRepository {
     return user;
   }
 
-  public async findById(id: string): Promise<User | undefined> {
+  public async findById(id: string): Promise<User | null> {
     const user = await this.ormRepository.findOne({
       where: {
         id,
@@ -35,7 +34,7 @@ class UsersRepository implements IUserRepository {
     return user;
   }
 
-  public async findByEmail(email: string): Promise<User | undefined> {
+  public async findByEmail(email: string): Promise<User | null> {
     const user = await this.ormRepository.findOne({
       where: {
         email,
@@ -45,7 +44,7 @@ class UsersRepository implements IUserRepository {
     return user;
   }
 
-  public async givenUser(id: string): Promise<User | undefined> {
+  public async givenUser(id: string): Promise<User | null> {
     const user = await getRepository(User)
       .createQueryBuilder('user')
       .where('user.id = :id', { id: id })
@@ -67,8 +66,10 @@ class UsersRepository implements IUserRepository {
     return userSaved;
   }
 
-  public async findOne(id: string): Promise<User | undefined> {
-    const userFound = await this.ormRepository.findOne(id);
+  public async findOne(id: string): Promise<User | null> {
+    const userFound = await this.ormRepository.findOne({
+      where: { id },
+    });
 
     return userFound;
   }
