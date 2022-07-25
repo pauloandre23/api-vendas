@@ -1,6 +1,7 @@
 import AppError from "@shared/errors/AppError";
 import { IProductsRepository } from "../domain/repositories/IProductsRepository";
 import Product from "../infra/typeorm/entities/Product";
+import { injectable, inject } from 'tsyringe';
 
 interface IRequest {
   id: string;
@@ -9,8 +10,12 @@ interface IRequest {
   quantity: number;
 }
 
+@injectable()
 class UpdateProductService {
-  constructor(private repository: IProductsRepository) {}
+  constructor(
+    @inject('ProductRepository')
+    private repository: IProductsRepository
+    ) {}
 
   public async execute({
      id,
