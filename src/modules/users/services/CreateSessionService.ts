@@ -4,6 +4,7 @@ import User from '../infra/typeorm/entities/User';
 import { sign } from 'jsonwebtoken';
 import authConfig from '@config/auth';
 import { IUserRepository } from '../infra/repositories/IUserRepository';
+import { inject, injectable } from 'tsyringe';
 
 interface IRequest {
   email: string;
@@ -15,8 +16,12 @@ interface IResponse {
   token: string;
 }
 
+@injectable()
 class CreateSessionService {
-  constructor(private repository: IUserRepository) {}
+  constructor(
+    @inject('UserRepository')
+    private repository: IUserRepository,
+  ) {}
 
   public async execute({ email, password }: IRequest): Promise<IResponse> {
     const user = await this.repository.findByEmail(email);

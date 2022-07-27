@@ -12,8 +12,5 @@ export const dataSource = new DataSource({
   password: 'docker',
   database: 'api-vendas-db-1',
   entities: [User, Product],
-  migrations: [
-    CreateProducts1656513279956,
-    CreateUsers1607534203339
-  ],
+  migrations: [CreateProducts1656513279956, CreateUsers1607534203339],
 });
