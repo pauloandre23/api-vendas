@@ -2,28 +2,29 @@ import { ICreateProduct } from '@modules/products/domain/models/ICreateProduct';
 import { IProduct } from '@modules/products/domain/models/IProduct';
 import { IProductsRepository } from '@modules/products/domain/repositories/IProductsRepository';
 import { dataSource } from '@shared/infra/typeorm';
-import { getRepository, Repository} from 'typeorm';
+import { getRepository, Repository } from 'typeorm';
 import Product from '../entities/Product';
 
-
 export class ProductRepository implements IProductsRepository {
-  private ormRepository: Repository<Product>
+  private ormRepository: Repository<Product>;
   constructor() {
-    this.ormRepository = dataSource.getRepository(Product)
+    this.ormRepository = dataSource.getRepository(Product);
   }
   public async findByName(name: string): Promise<Product | null> {
     const product = await this.ormRepository.findOne({
       where: {
         name,
-      }
-    })
+      },
+    });
     return product;
   }
 
-  public async create({name, quantity, price}: ICreateProduct): Promise<Product> {
-    const product = this.ormRepository.create({ name, quantity, price
-    })
-    console.log("product  repository", product)
+  public async create({
+    name,
+    quantity,
+    price,
+  }: ICreateProduct): Promise<Product> {
+    const product = this.ormRepository.create({ name, quantity, price });
     await this.ormRepository.save(product);
 
     return product;
@@ -51,5 +52,4 @@ export class ProductRepository implements IProductsRepository {
     const products = await this.ormRepository.find();
     return products;
   }
-
 }

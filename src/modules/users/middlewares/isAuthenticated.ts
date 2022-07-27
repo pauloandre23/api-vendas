@@ -24,12 +24,11 @@ export default function isAuthenticated(
   try {
     const decodedToken = verify(token, authConfig.jwt.secret);
 
-    console.log(decodedToken)
     const { sub } = decodedToken as ITokenPayload;
 
     request.user = {
-      id: sub
-    }
+      id: sub,
+    };
 
     return next();
   } catch {

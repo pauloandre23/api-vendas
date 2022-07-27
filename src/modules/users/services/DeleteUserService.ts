@@ -1,15 +1,19 @@
-import AppError from "@shared/errors/AppError";
-import { IUserRepository } from "../infra/repositories/IUserRepository";
+import AppError from '@shared/errors/AppError';
+import { IUserRepository } from '../infra/repositories/IUserRepository';
+import { inject, injectable } from 'tsyringe';
 
 interface IRequest {
   id: string;
 }
 
+@injectable()
 class DeleteUserService {
-  constructor(private repository: IUserRepository) {}
+  constructor(
+    @inject('UserRepository')
+    private repository: IUserRepository,
+  ) {}
 
-  public async execute({ id }: IRequest) : Promise<void> {
-
+  public async execute({ id }: IRequest): Promise<void> {
     const user = await this.repository.findOne(id);
 
     if (!user) {

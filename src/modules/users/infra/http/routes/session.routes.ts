@@ -7,7 +7,7 @@ import CreateSessionService from '@modules/users/services/CreateSessionService';
 const sessionRouter = Router();
 
 const repository = new UsersRepository();
-const createSessionService = new CreateSessionService(repository)
+const createSessionService = new CreateSessionService(repository);
 
 const sessionController = new SessionController(createSessionService);
 

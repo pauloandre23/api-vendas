@@ -1,5 +1,5 @@
-import AppError from "@shared/errors/AppError";
-import { IProductsRepository } from "../domain/repositories/IProductsRepository";
+import AppError from '@shared/errors/AppError';
+import { IProductsRepository } from '../domain/repositories/IProductsRepository';
 import { injectable, inject } from 'tsyringe';
 
 interface IRequest {
@@ -10,10 +10,10 @@ interface IRequest {
 class DeleteProductService {
   constructor(
     @inject('ProductRepository')
-    private repository: IProductsRepository
-    ) {}
+    private repository: IProductsRepository,
+  ) {}
 
-  public async execute({ id }: IRequest) : Promise<void> {
+  public async execute({ id }: IRequest): Promise<void> {
     const product = await this.repository.findOne(id);
 
     if (!product) {
