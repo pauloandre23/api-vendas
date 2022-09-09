@@ -28,4 +28,4 @@ npm install
 ```
 Now just run yarn dev. Make sure to create your database instance, it could be running on a docker container, like I did.
 
-[LinkedIn](https://www.linkedin.com/in/paulo-de-barros-filho-a64377a8/)
+[LinkedIn](https://www.linkedin.com/in/paulo-andr%C3%A9-de-barros-a64377a8/)
